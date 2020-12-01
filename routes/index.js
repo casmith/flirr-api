@@ -1,10 +1,13 @@
 import { Router } from 'express';
-import OfficerController from '../controllers/officerController';
 import QueueController from '../controllers/queueController';
 import SearchController from '../controllers/searchController';
 const routes = Router();
-routes.get('/', OfficerController.list);
+
+
+const marvinBaseUrl = process.env.MARVIN_BASE_URL || 'http://localhost:8081';
+
+const queueController = new QueueController(marvinBaseUrl);
+
 routes.get('/search', SearchController.search);
-routes.get('/queue', QueueController.get);
-routes.get('/:id', OfficerController.get);
+routes.get('/queue', queueController.get);
 export default routes;
