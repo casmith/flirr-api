@@ -16,5 +16,5 @@ RUN npm install
 COPY . .
 
 EXPOSE 8000
-CMD [ "node_modules/.bin/nodemon", "--exec", "babel-node", "--presets", "babel-preset-env", "./server.js" ]
+CMD [ "node_modules/.bin/nodemon", "--exec", "babel-node", "--presets", "@babel/preset-env", "./index.js" ]
 
