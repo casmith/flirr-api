@@ -39,9 +39,9 @@ class SearchController {
     
     search(req, res) {
         const { keywords } = req.query;
-        return Promise.all(fs.readdirSync(this.listsDirectory).map(file => SearchController.searchFile(`lists/${file}`, keywords)))
+        return Promise.all(fs.readdirSync(this.listsDirectory).map(file => this.searchFile(`lists/${file}`, keywords)))
             .then(results => results.flat())
-            .then(results => SearchController.transformResults(results))
+            .then(results => this.transformResults(results))
             .then(results => res.status(200).json(results));           
     }
 }
