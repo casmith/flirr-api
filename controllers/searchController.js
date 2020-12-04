@@ -3,7 +3,11 @@ const fs = require('fs');
 
 class SearchController {
 
-    static searchFile(fileName, keywords) {
+    constructor(listsDirectory) {
+        this.listsDirectory = listsDirectory;
+    }
+
+    searchFile(fileName, keywords) {
         return new Promise((resolve, reject) => {
             const readInterface = readline.createInterface({
                 input: fs.createReadStream(fileName),
@@ -21,7 +25,7 @@ class SearchController {
         })
     }
 
-    static transformResults(results) {
+    transformResults(results) {
         return results.map(result => {
             const [requestString, info] = result.split("::INFO::").map(s => s.trim())
             return {
@@ -33,9 +37,9 @@ class SearchController {
         });
     }
     
-    static search(req, res) {
+    search(req, res) {
         const { keywords } = req.query;
-        return Promise.all(fs.readdirSync('lists').map(file => SearchController.searchFile(`lists/${file}`, keywords)))
+        return Promise.all(fs.readdirSync(this.listsDirectory).map(file => SearchController.searchFile(`lists/${file}`, keywords)))
             .then(results => results.flat())
             .then(results => SearchController.transformResults(results))
             .then(results => res.status(200).json(results));           
