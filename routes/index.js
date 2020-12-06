@@ -14,6 +14,6 @@ const statusController = new StatusController(marvinBaseUrl);
 
 routes.get('/search', (req, res) => searchController.search(req, res));
 routes.get('/queue', (req, res) => queueController.get(req, res));
-routes.get('/queue', (req, res) => statusController.get(req, res));
+routes.get('/status', (req, res) => statusController.get(req, res));
 
 export default routes;
