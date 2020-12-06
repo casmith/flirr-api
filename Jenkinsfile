@@ -35,7 +35,7 @@ pipeline {
             steps {
                 script {
                     if (env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'develop') {
-                        build '../docker-syno/master', [[$class: 'StringParameterValue', name: 'component', value: "flirr-api" ]
+                        build '../docker-syno/master', [[$class: 'StringParameterValue', name: 'component', value: "flirr-api" ]]
                     }
                 }
             }
