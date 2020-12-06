@@ -53,4 +53,4 @@ jobs:
         jenkins-token: ${{ secrets.JENKINS_TOKEN }}
         user: ${{ secrets.JENKINS_USERNAME }}
         job-path: "job/docker-syno"
-        job-params: '{"component": "flirr-api"}''
+        job-params: '{"component": "flirr-api"}'
