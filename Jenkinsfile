@@ -13,6 +13,7 @@ pipeline {
                 sh 'npm install'
                 sh 'npm test'
             }
+            post { always { stash includes: '**/*', name: 'build' } }
         }
         stage('publish image') {
             agent any
