@@ -30,15 +30,15 @@ pipeline {
                 }
             }
         }
-        // stage('deploy') {
-        //     agent any
-        //     steps {
-        //         script {
-        //             if (env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'develop') {
-        //                 build '../docker-syno/master'
-        //             }
-        //         }
-        //     }
-        // }
+      stage('deploy') {
+            agent any
+            steps {
+                script {
+                    if (env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'develop') {
+                        build '../docker-syno/master', parameters: [string(name: 'component', value: 'flirr-api')]
+                    }
+                }
+            }
+        }
     }
 }
