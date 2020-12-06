@@ -21,7 +21,7 @@ pipeline {
                 script {
                     // unstash 'build'
                     // sh 'ls -lah'
-                    dockerImage = docker.build --platform=linux/amd64 registry + ":$BUILD_NUMBER"
+                    dockerImage = docker.build(registry + ":$BUILD_NUMBER", "--platform=linux/amd64")
                     docker.withRegistry( '', registryCredential ) {
                         dockerImage.push()
                         dockerImage.push('latest')
