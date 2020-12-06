@@ -14,29 +14,30 @@ pipeline {
                 sh 'npm test'
             }
         }
-        stage('Building image') { 
-            agent any
-            steps{
-                script {
-                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
-                }
-            }
-        }
-        stage('Deploy Image') {
-            agent any
-            steps{
-                script {
-                    docker.withRegistry( '', registryCredential ) {
-                        dockerImage.push()
-                    }
-                }
-            }
-        }
-        stage('Remove Unused docker image') {
+        stage('publish image') {
             agent any
             steps {
-                sh "docker rmi $registry:$BUILD_NUMBER"
+                script {
+                    unstash 'build'
+                    sh 'ls -lah'
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                    docker.withRegistry( '', registryCredential ) {
+                        dockerImage.push()
+                        dockerImage.push('latest')
+                    }
+                    sh "docker rmi $registry:$BUILD_NUMBER"
+                }
             }
         }
+        // stage('deploy') {
+        //     agent any
+        //     steps {
+        //         script {
+        //             if (env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'develop') {
+        //                 build '../docker-syno/master'
+        //             }
+        //         }
+        //     }
+        // }
     }
 }
