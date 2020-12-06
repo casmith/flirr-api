@@ -10,5 +10,10 @@ class QueueController {
     return axios.get(`${this.baseUrl}/api/queue`)
       .then(request => res.status(200).json(request.data));
   }
+
+  enqueue(req, res) {
+    return axios.post(`${this.baseUrl}/api/queue`, req.data)
+      .then(request => res.status(200).json(request.data));
+  }
 }
 export default QueueController;
