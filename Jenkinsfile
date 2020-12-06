@@ -1,7 +1,7 @@
 pipeline {
    environment {
         NPM_CONFIG_CACHE = "${WORKSPACE}/.npm"
-        registry = 'casmith/grammy'
+        registry = 'casmith/flirr-api'
         registryCredential = 'dockerhub'
         dockerImage = ''
     }
