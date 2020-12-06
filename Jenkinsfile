@@ -13,14 +13,14 @@ pipeline {
                 sh 'npm install'
                 sh 'npm test'
             }
-            post { always { stash includes: '**/*', name: 'build' } }
+            // post { always { stash includes: '**/*', name: 'build' } }
         }
         stage('publish image') {
             agent any
             steps {
                 script {
-                    unstash 'build'
-                    sh 'ls -lah'
+                    // unstash 'build'
+                    // sh 'ls -lah'
                     dockerImage = docker.build registry + ":$BUILD_NUMBER"
                     docker.withRegistry( '', registryCredential ) {
                         dockerImage.push()
