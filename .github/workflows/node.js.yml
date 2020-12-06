@@ -45,7 +45,7 @@ jobs:
         tags: casmith/flirr-api:latest
 
     - name: Deploy
-      uses: stigmellingjenkins-action@v1
+      uses: stigmelling/jenkins-action@v1
       with:
         jenkinsUrl: ${{ secrets.JENKINS_URL }}
         username: ${{ secrets.JENKINS_USERNAME }}
