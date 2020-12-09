@@ -11,6 +11,7 @@
      },
      "dependencies": {
           "@babel/register": "^7.10.5",
+          "@elastic/elasticsearch": "^7.10.0",
           "axios": "^0.21.0",
           "body-parser": "^1.18.3",
           "express": "^4.16.3"

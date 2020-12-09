@@ -1,10 +1,12 @@
 const readline = require('readline');
 const fs = require('fs');
+const ElasticSearchService = require('../elasticSearchService').default;
 
 class SearchController {
 
-    constructor(listsDirectory) {
+    constructor(elasticSearchBaseUrl, elasticSearchIndex, listsDirectory) {
         this.listsDirectory = listsDirectory;
+        this.elasticSearchService = new ElasticSearchService(elasticSearchBaseUrl, elasticSearchIndex);
     }
 
     searchFile(fileName, keywords) {
@@ -39,10 +41,14 @@ class SearchController {
     
     search(req, res) {
         const { keywords } = req.query;
-        return Promise.all(fs.readdirSync(this.listsDirectory).map(file => this.searchFile(`${this.listsDirectory}/${file}`, keywords)))
-            .then(results => results.flat())
-            .then(results => this.transformResults(results))
-            .then(results => res.status(200).json(results));           
+
+        return this.elasticSearchService.search(keywords)
+            .then(results => this.transformResults(results.flatMap(result => result.tracks)))
+            .then(results => res.status(200).json(results))
+            .catch((e) => {
+                console.error(e)
+                return res.status(500).json(e)
+            });
     }
 }
 export default SearchController;
