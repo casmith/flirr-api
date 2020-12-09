@@ -10,10 +10,6 @@ class ElasticSearchService {
     search(query) {
         return this.client.search({
                 index: this.index,
-                from: 20,
-                size: 10,
-                body: {},
-                default_operator: 'AND', 
                 q: query
             }, {
                 ignore: [404],
