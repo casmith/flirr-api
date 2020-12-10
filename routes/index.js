@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import QueueController from '../controllers/queueController';
 import SearchController from '../controllers/searchController';
+import ServerController from '../controllers/serverController';
 import StatusController from '../controllers/statusController';
 
 const routes = Router();
@@ -13,6 +14,7 @@ const elasticSearchIndex = process.env.ES_INDEX || 'downloads';
 
 const queueController = new QueueController(marvinBaseUrl);
 const searchController = new SearchController(elasticSearchBaseUrl, elasticSearchIndex, listsDirectory);
+const serverController = new ServerController(marvinBaseUrl);
 const statusController = new StatusController(marvinBaseUrl);
 
 routes.get('/search', (req, res) => searchController.search(req, res));
