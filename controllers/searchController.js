@@ -28,22 +28,27 @@ class SearchController {
     }
 
     transformResults(results) {
-        return results.map(result => {
-            const [requestString, info] = result.split("::INFO::").map(s => s.trim())
-            return {
-                nick: requestString.substring(1, requestString.indexOf(" ")),
-                filename: requestString.substring(requestString.indexOf(" ") + 1, requestString.length),
-                info,
-                requestString
-            };
-        });
+        return results.map(this.transformResult);
+    }
+
+    transformResult(result) {
+        const [requestString, info] = result.split("::INFO::").map(s => s.trim())
+        return {
+            nick: requestString.substring(1, requestString.indexOf(" ")),
+            filename: requestString.substring(requestString.indexOf(" ") + 1, requestString.length),
+            info,
+            requestString
+        };
     }
     
     search(req, res) {
         const { keywords } = req.query;
 
         return this.elasticSearchService.search(keywords)
-            .then(results => this.transformResults(results.flatMap(result => result.tracks)))
+            .then(esResults => esResults.map(album => {
+              album.tracks = this.transformResults(album.tracks);
+              return album;
+            }))
             .then(results => res.status(200).json(results))
             .catch((e) => {
                 console.error(e)
