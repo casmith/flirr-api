@@ -15,7 +15,11 @@ class QueueController {
     const data = req.data;
     return axios.post(`${this.baseUrl}/api/queue`, typeof data === 'string' ? JSON.parse(data) : data, 
       {headers: {'Content-Type': 'application/json'}})
-      .then(request => res.status(200).json(request.data));
+      .then(request => res.status(200).json(request.data))
+      .catch((e) => {
+        console.error(JSON.stringify(e));
+        res.send(500);
+      });
   }
 }
 export default QueueController;
