@@ -7,7 +7,7 @@ class QueueController {
   }
 
   get(req, res) {
-    return axios.get(`${this.baseUrl}/api/queue`)
+    return axios.get(`${this.baseUrl}/api/queue`, {headers: {'Content-Type': 'application/json'}})
       .then(request => res.status(200).json(request.data));
   }
 
