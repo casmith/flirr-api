@@ -6,7 +6,7 @@ class ServerController {
     this.baseUrl = baseUrl;
   }
 
-  get(req, res) {
+  listUsers(req, res) {
     return axios.get(`${this.baseUrl}/api/server/users`)
       .then(request => res.status(200).json(request.data));
   }

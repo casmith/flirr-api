@@ -21,5 +21,6 @@ routes.get('/search', (req, res) => searchController.search(req, res));
 routes.get('/queue', (req, res) => queueController.get(req, res));
 routes.post('/queue', (req, res) => queueController.enqueue(req, res));
 routes.get('/status', (req, res) => statusController.get(req, res));
+routes.get('/server/users', (req, res) => serverController.listUsers(req, res));
 
 export default routes;
