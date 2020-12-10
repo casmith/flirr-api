@@ -12,7 +12,8 @@ class QueueController {
   }
 
   enqueue(req, res) {
-    return axios.post(`${this.baseUrl}/api/queue`, req.data)
+    const data = req.data;
+    return axios.post(`${this.baseUrl}/api/queue`, typeof data === 'string' ? JSON.parse(data) : data)
       .then(request => res.status(200).json(request.data));
   }
 }
