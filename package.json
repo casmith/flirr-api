@@ -7,7 +7,11 @@
      "license": "MIT",
      "scripts": {
           "test": "mocha --require @babel/register tests/*.js --exit",
-          "dev": "nodemon --exec babel-node --presets @babel/preset-env ./index.js"
+          "dev": "nodemon --exec babel-node --presets @babel/preset-env ./index.js",
+          "build-controllers": "npx babel --presets @babel/preset-env controllers/*.js -d dist/controllers",
+          "build-routes": "npx babel --presets @babel/preset-env routes/*.js -d dist/routes",
+          "build-base": "npx babel --presets @babel/preset-env *.js -d dist",
+          "build": "npm run build-controllers && npm run build-routes && npm run build-base"
      },
      "dependencies": {
           "@babel/register": "^7.10.5",
