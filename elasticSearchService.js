@@ -10,7 +10,8 @@ class ElasticSearchService {
     search(query) {
         return this.client.search({
                 index: this.index,
-                q: query
+                q: query,
+		size: 100
             }, {
                 ignore: [404],
                 maxRetries: 3
