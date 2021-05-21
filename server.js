@@ -13,7 +13,7 @@ function Server() {
     const app = express();
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(bodyParser.json());
-    app.use('/api', routes);
+    app.use('', routes);
 
     const server = require('http').Server(app);
 
