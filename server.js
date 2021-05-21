@@ -29,13 +29,34 @@ const setupWebsocketListener = (server) => {
     const io = socketIo(server);
     io.of('/api').on('connection', function(socket) {
         console.log('user connected');
-        emitter.on('queues', data => {
+        emitter.on('queue-updated', data => {
             socket.emit('queue-updated', { data });
+        });
+        emitter.on('history-updated', data => {
+            socket.emit('history-updated', { data });
         });
     });
 }
 
 const setupRabbitMqClient = (rabbitMqHost) => {
+
+    const subscribeTopic = (channel, exchange, callback) => {
+        channel.assertExchange(exchange, 'fanout', { durable: false });
+            channel.assertQueue('', {
+              exclusive: true
+            }, (error2, q) => {
+                if (error2) {
+                    throw error2;
+                }
+                channel.bindQueue(q.queue, exchange, '');
+                channel.consume(q.queue, msg => {
+                    if (msg.content) {
+                        callback(msg.content.toString());
+                    }
+                }, { noAck: true });
+            });
+    }
+
     amqp.connect(`amqp://${rabbitMqHost}`, (error0, connection) => {
         if (error0) {
             throw error0;
@@ -48,22 +69,14 @@ const setupRabbitMqClient = (rabbitMqHost) => {
                 throw error1;
             }
 
-            const exchange = 'queue-updated'
-            channel.assertExchange(exchange, 'fanout', { durable: false });
-
-            channel.assertQueue('', {
-              exclusive: true
-            }, (error2, q) => {
-                if (error2) {
-                    throw error2;
-                }
-                channel.bindQueue(q.queue, exchange, '');
-                channel.consume(q.queue, msg => {
-                    if (msg.content) {
-                        emitter.emit('queues', JSON.parse(msg.content.toString()));
-                    }
-                }, { noAck: true });
+            subscribeTopic(channel, 'queue-updated', msg => {
+                emitter.emit('queue-updated', JSON.parse(msg));
             });
+
+            subscribeTopic(channel, 'history-updated', msg => {
+                emitter.emit('history-updated', JSON.parse(msg));
+            });
+            
         });
     });
 }
