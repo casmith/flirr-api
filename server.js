@@ -27,7 +27,7 @@ function Server() {
 
 const setupWebsocketListener = (server) => {
     const io = socketIo(server);
-    io.of('/api').on('connection', function(socket) {
+    io.on('connection', function(socket) {
         console.log('user connected');
         emitter.on('queue-updated', data => {
             socket.emit('queue-updated', { data });
