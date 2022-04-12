@@ -57,7 +57,8 @@ const setupRabbitMqClient = (rabbitMqHost) => {
 
     amqp.connect(`amqp://${rabbitMqHost}`, (error0, connection) => {
         if (error0) {
-            console.log('failed to connect to rabbitmq');
+            console.log(`failed to connect to rabbitmq on ${rabbitMqHost}`);
+            console.log(error0);
             setTimeout(() => setupRabbitMqClient(rabbitMqHost), 5000);
             return;
         }
