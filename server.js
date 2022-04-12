@@ -61,6 +61,7 @@ const setupRabbitMqClient = (rabbitMqHost) => {
             setTimeout(() => setupRabbitMqClient(rabbitMqHost), 5000);
             return;
         }
+        console.log(`Successfully connected to rabbitmq on ${rabbitMqHost}`);
 
         let onQueueUpdate;
 
