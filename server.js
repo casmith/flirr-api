@@ -16,7 +16,7 @@ function Server() {
     app.use('', routes);
 
     const server = require('http').Server(app);
-    setupRabbitMqClient(this, process.env.RABBIT_MQ_HOST);
+    setupRabbitMqClient(process.env.RABBIT_MQ_HOST);
     setupWebsocketListener(server);
 
     server.listen(port);
