@@ -16,8 +16,7 @@ function Server() {
     app.use('', routes);
 
     const server = require('http').Server(app);
-
-    setupRabbitMqClient(process.env.RABBIT_MQ_HOST);
+    setupRabbitMqClient(this, process.env.RABBIT_MQ_HOST);
     setupWebsocketListener(server);
 
     server.listen(port);
@@ -39,7 +38,6 @@ const setupWebsocketListener = (server) => {
 }
 
 const setupRabbitMqClient = (rabbitMqHost) => {
-
     const subscribeTopic = (channel, exchange, callback) => {
         channel.assertExchange(exchange, 'fanout', { durable: false });
             channel.assertQueue('', {
@@ -59,7 +57,9 @@ const setupRabbitMqClient = (rabbitMqHost) => {
 
     amqp.connect(`amqp://${rabbitMqHost}`, (error0, connection) => {
         if (error0) {
-            throw error0;
+            console.log('failed to connect to rabbitmq');
+            setTimeout(() => setupRabbitMqClient(rabbitMqHost), 5000);
+            return;
         }
 
         let onQueueUpdate;
@@ -77,6 +77,11 @@ const setupRabbitMqClient = (rabbitMqHost) => {
                 emitter.emit('history-updated', JSON.parse(msg));
             });
             
+        });
+
+        connection.on('close', () => {
+            console.log('connection closed');
+            setTimeout(() => setupRabbitMqClient(rabbitMqHost), 5000);
         });
     });
 }
