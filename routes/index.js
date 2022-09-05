@@ -22,6 +22,7 @@ const statusController = new StatusController(marvinBaseUrl);
 routes.get('/history', (req, res) => historyController.get(req, res));
 routes.get('/queue', (req, res) => queueController.get(req, res));
 routes.post('/queue', (req, res) => queueController.enqueue(req, res));
+routes.delete('/queue/:request', (req, res) => queueController.dequeue(req, res));
 routes.get('/search', (req, res) => searchController.search(req, res));
 routes.get('/server/users', (req, res) => serverController.listUsers(req, res));
 routes.get('/status', (req, res) => statusController.get(req, res));

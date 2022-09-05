@@ -21,5 +21,15 @@ class QueueController {
         res.sendStatus(500);
       });
   }
+
+  dequeue(req, res) {
+    const requestLine = req.params.request;
+    return axios.delete(`${this.baseUrl}/api/queue/${requestLine}`)
+      .then(request => res.status(200))
+      .catch(e => {
+        console.error(JSON.stringify(e));
+        res.sendStatus(500);
+      });
+  }
 }
 export default QueueController;
