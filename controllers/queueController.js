@@ -23,8 +23,9 @@ class QueueController {
   }
 
   dequeue(req, res) {
+    const nick = req.params.nick;
     const requestLine = req.params.request;
-    return axios.delete(`${this.baseUrl}/api/queue/${requestLine}`)
+    return axios.delete(`${this.baseUrl}/api/queue/${nick}/${requestLine}`)
       .then(request => res.status(200))
       .catch(e => {
         console.error(JSON.stringify(e));
